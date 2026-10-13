@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Step Form</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <div class="form-layout">
+      <aside class="sidebar" aria-label="Form progress">
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-number active" data-step="1">1</div>
+            <div class="step-label">
+              <span>STEP 1</span>
+              <strong>YOUR INFO</strong>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number" data-step="2">2</div>
+            <div class="step-label">
+              <span>STEP 2</span>
+              <strong>SELECT PLAN</strong>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number" data-step="3">3</div>
+            <div class="step-label">
+              <span>STEP 3</span>
+              <strong>ADD-ONS</strong>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <div class="step-number" data-step="4">4</div>
+            <div class="step-label">
+              <span>STEP 4</span>
+              <strong>SUMMARY</strong>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <section class="form-panel">
+        <!-- STEP 1 -->
+        <form id="personal-form" novalidate>
+          <header class="page-header">
+            <h1>Personal info</h1>
+            <p>Please provide your name, email address, and phone number.</p>
+          </header>
+
+          <div class="field-group">
+            <div class="field-heading">
+              <label for="userName">Name</label>
+              <span class="error-message" id="userName-error"></span>
+            </div>
+            <input
+              type="text"
+              id="userName"
+              name="userName"
+              placeholder="e.g. Stephen King"
+              required
+              autocomplete="name"
+            >
+          </div>
+
+          <div class="field-group">
+            <div class="field-heading">
+              <label for="email">Email Address</label>
+              <span class="error-message" id="email-error"></span>
+            </div>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="e.g. stephenking@lorem.com"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="field-group">
+            <div class="field-heading">
+              <label for="phone">Phone Number</label>
+              <span class="error-message" id="phone-error"></span>
+            </div>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="e.g. +1 234 567 890"
+              required
+              autocomplete="tel"
+            >
+          </div>
+
+          <div class="form-footer">
+            <span></span>
+            <button id="next-button" type="submit">Next Step</button>
+          </div>
+        </form>
+
+        <!-- STEP 2 -->
+        <section id="plan-step" class="step-content" hidden>
+          <header class="page-header">
+            <h1>Select your plan</h1>
+            <p>You have the option of monthly or yearly billing.</p>
+          </header>
+
+          <div class="plan-grid">
+            <button type="button" class="plan_card" data-plan="0"
+              aria-pressed="false">
+              <span class="plan-icon arcade-icon">🎮</span>
+              <span class="plan-info">
+                <strong>Arcade</strong>
+                <span class="plan-price"></span>
+                <small class="yearly-benefit" hidden>2 months free</small>
+              </span>
+            </button>
+
+            <button type="button" class="plan_card" data-plan="1"
+              aria-pressed="false">
+              <span class="plan-icon advanced-icon">🕹️</span>
+              <span class="plan-info">
+                <strong>Advanced</strong>
+                <span class="plan-price"></span>
+                <small class="yearly-benefit" hidden>2 months free</small>
+              </span>
+            </button>
+
+            <button type="button" class="plan_card" data-plan="2"
+              aria-pressed="false">
+              <span class="plan-icon pro-icon">🎮</span>
+              <span class="plan-info">
+                <strong>Pro</strong>
+                <span class="plan-price"></span>
+                <small class="yearly-benefit" hidden>2 months free</small>
+              </span>
+            </button>
+          </div>
+
+          <p class="error-message plan-error" id="plan-error" role="alert"></p>
+
+          <div class="billing-toggle">
+            <span id="monthly-label" class="billing-active">Monthly</span>
+            <button type="button" class="toggle-switch" id="billing-toggle"
+              role="switch" aria-checked="false" aria-label="Toggle yearly billing">
+              <span class="toggle-knob"></span>
+            </button>
+            <span id="yearly-label">Yearly</span>
+          </div>
+
+          <div class="form-footer">
+            <button type="button" class="back-button">Go Back</button>
+            <button type="button" id="next-button" class="next-step-button">
+              Next Step
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section id="addons-step" class="step-content" hidden>
+          <header class="page-header">
+            <h1>Pick add-ons</h1>
+            <p>Add-ons help enhance your gaming experience.</p>
+          </header>
+
+          <div class="addon-list">
+            <label class="addon_card">
+              <input type="checkbox" name="addons" value="online">
+              <span class="addon-description">
+                <strong>Online service</strong>
+                <span>Access to multiplayer games</span>
+              </span>
+              <span class="addon-price"></span>
+            </label>
+
+            <label class="addon_card">
+              <input type="checkbox" name="addons" value="storage">
+              <span class="addon-description">
+                <strong>Larger storage</strong>
+                <span>Extra 1TB of cloud save</span>
+              </span>
+              <span class="addon-price"></span>
+            </label>
+
+            <label class="addon_card">
+              <input type="checkbox" name="addons" value="profile">
+              <span class="addon-description">
+                <strong>Customizable Profile</strong>
+                <span>Custom theme on your profile</span>
+              </span>
+              <span class="addon-price"></span>
+            </label>
+          </div>
+
+          <div class="form-footer">
+            <button type="button" class="back-button">Go Back</button>
+            <button type="button" id="next-button" class="next-step-button">
+              Next Step
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 4 -->
+        <section id="summary-step" class="step-content" hidden>
+          <header class="page-header">
+            <h1>Finishing up</h1>
+            <p>Double-check everything looks OK before confirming.</p>
+          </header>
+
+          <div class="summary-box">
+            <div class="summary-plan">
+              <div>
+                <strong id="summary-plan-name"></strong>
+                <button type="button" class="text-link" id="change-plan">
+                  Change
+                </button>
+              </div>
+              <strong id="summary-plan-price" class="summary-price"></strong>
+            </div>
+
+            <div id="summary-addons" class="summary-addons"></div>
+          </div>
+
+          <div class="total-row">
+            <span id="total-label">Total (per month)</span>
+            <strong id="summary-total"></strong>
+          </div>
+
+          <div class="form-footer">
+            <button type="button" class="back-button">Go Back</button>
+            <button type="button" id="confirm-button" class="confirm-button">
+              Confirm
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 5 -->
+        <section id="thank-you-step" class="step-content thank-you" hidden>
+          <div class="thank-you-icon" aria-hidden="true">✓</div>
+          <h1>Thank You!</h1>
+          <p>
+            Thanks for confirming your subscription! We hope you have fun
+            using our platform. If you ever need support, please feel free
+            to email us at
+            <a href="mailto:support@loremgaming.com">
+              support@loremgaming.com
+            </a>.
+          </p>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
