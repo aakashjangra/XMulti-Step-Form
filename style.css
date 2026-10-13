@@ -19,7 +19,8 @@ body {
   min-height: 100vh;
 }
 
-button, input {
+button,
+input {
   font: inherit;
 }
 
@@ -111,6 +112,7 @@ a:focus-visible {
   color: #c4c2ff;
   font-size: 11px;
   letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .step-label strong {
@@ -288,9 +290,17 @@ a:focus-visible {
   font-size: 23px;
 }
 
-.arcade-icon { background: #ffaf7e; }
-.advanced-icon { background: #f9818e; }
-.pro-icon { background: #483eff; }
+.arcade-icon {
+  background: #ffaf7e;
+}
+
+.advanced-icon {
+  background: #f9818e;
+}
+
+.pro-icon {
+  background: #483eff;
+}
 
 .plan-info {
   display: flex;
@@ -683,7 +693,9 @@ a:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     transition-duration: .01ms !important;
   }
 }

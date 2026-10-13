@@ -9,21 +9,18 @@ const addons = [
   {
     id: "online",
     name: "Online service",
-    description: "Access to multiplayer games",
     monthly: 1,
     yearly: 10
   },
   {
     id: "storage",
     name: "Larger storage",
-    description: "Extra 1TB of cloud save",
     monthly: 2,
     yearly: 20
   },
   {
     id: "profile",
     name: "Customizable Profile",
-    description: "Custom theme on your profile",
     monthly: 2,
     yearly: 20
   }
@@ -60,51 +57,44 @@ function getPriceKey() {
 
 function showError(input, message) {
   input.setCustomValidity(message);
-
   input.setAttribute("aria-invalid", "true");
 
-  document.getElementById(`${input.name}-error`).textContent =
-    message;
+  document.getElementById(`${input.name}-error`).textContent = message;
 }
 
 function clearError(input) {
   input.setCustomValidity("");
-
   input.removeAttribute("aria-invalid");
 
   document.getElementById(`${input.name}-error`).textContent = "";
 }
 
 function validatePersonalInfo() {
-  let firstInvalidInput = null;
+  // Clear stale custom errors first, so the browser evaluates
+  // the current input values and their native validity rules.
+  personalInputs.forEach(clearError);
 
-  personalInputs.forEach((input) => {
-    clearError(input);
+  for (const input of personalInputs) {
+    if (!input.checkValidity()) {
+      const message = input.validity.valueMissing
+        ? "This field is required"
+        : input.validity.typeMismatch
+          ? "Please enter a valid email address"
+          : "Please enter a valid value";
 
-    let message = "";
-
-    if (!input.value.trim()) {
-      message = "This field is required";
-    } else if (
-      input === emailInput &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)
-    ) {
-      message = "Please enter a valid email address";
-    }
-
-    if (message) {
       showError(input, message);
-
-      if (!firstInvalidInput) {
-        firstInvalidInput = input;
-      }
+      input.reportValidity();
+      input.focus();
+      return false;
     }
-  });
 
-  if (firstInvalidInput) {
-    firstInvalidInput.reportValidity();
-    firstInvalidInput.focus();
-    return false;
+    // Prevent names or phone numbers containing only whitespace.
+    if (!input.value.trim()) {
+      showError(input, "This field is required");
+      input.reportValidity();
+      input.focus();
+      return false;
+    }
   }
 
   return true;
@@ -119,10 +109,11 @@ personalInputs.forEach((input) => {
 function updateStepIndicator() {
   document.querySelectorAll(".step-number").forEach((indicator) => {
     const number = Number(indicator.dataset.step);
+    const active = number === currentStep;
 
-    indicator.classList.toggle("active", number === currentStep);
+    indicator.classList.toggle("active", active);
 
-    if (number === currentStep) {
+    if (active) {
       indicator.setAttribute("aria-current", "step");
     } else {
       indicator.removeAttribute("aria-current");
@@ -136,19 +127,15 @@ function renderPlanPrices() {
   document.querySelectorAll(".plan_card").forEach((card, index) => {
     const plan = plans[index];
 
-    card.querySelector(".plan-price").textContent =
-      price(plan[key]);
-
+    card.querySelector(".plan-price").textContent = price(plan[key]);
     card.querySelector(".yearly-benefit").hidden = !isYearly;
   });
 
   document.querySelectorAll(".addon_card").forEach((card) => {
-    const addon = addons.find(
-      (item) => item.id === card.querySelector("input").value
-    );
+    const id = card.querySelector('input[type="checkbox"]').value;
+    const addon = addons.find((item) => item.id === id);
 
-    card.querySelector(".addon-price").textContent =
-      `+${price(addon[key])}`;
+    card.querySelector(".addon-price").textContent = `+${price(addon[key])}`;
   });
 }
 
@@ -182,7 +169,6 @@ function renderAddonSelection() {
     const checkbox = card.querySelector('input[type="checkbox"]');
 
     checkbox.checked = selectedAddons.has(checkbox.value);
-
     card.classList.toggle("selected", checkbox.checked);
   });
 }
@@ -225,13 +211,11 @@ function renderSummary() {
   document.getElementById("total-label").textContent =
     `Total (per ${isYearly ? "year" : "month"})`;
 
-  document.getElementById("summary-total").textContent =
-    `+${price(total)}`;
+  document.getElementById("summary-total").textContent = `+${price(total)}`;
 }
 
 function updateNextButton() {
-  // Keep the Cypress selector unique: only the active next button
-  // should have the ID "next-button".
+  // Only one visible action should match #next-button at a time.
   document.querySelectorAll("#next-button").forEach((button) => {
     button.removeAttribute("id");
   });
@@ -240,10 +224,8 @@ function updateNextButton() {
 
   if (currentStep === 1) {
     activeButton = personalForm.querySelector('button[type="submit"]');
-  } else if (currentStep >= 2 && currentStep <= 3) {
-    activeButton = stepElements[currentStep].querySelector(
-      ".next-step-button"
-    );
+  } else if (currentStep === 2 || currentStep === 3) {
+    activeButton = stepElements[currentStep].querySelector(".next-step-button");
   } else if (currentStep === 4) {
     activeButton = document.getElementById("confirm-button");
   }
@@ -267,7 +249,6 @@ function renderStep() {
     renderPlanPrices();
     renderBillingToggle();
     renderPlanSelection();
-
     document.getElementById("plan-error").textContent = "";
   }
 
@@ -290,7 +271,7 @@ function goToStep(step) {
 personalForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  if (currentStep === 1 && validatePersonalInfo()) {
+  if (validatePersonalInfo()) {
     goToStep(2);
   }
 });
@@ -300,7 +281,6 @@ document.querySelectorAll(".plan_card").forEach((card) => {
     selectedPlan = Number(card.dataset.plan);
 
     renderPlanSelection();
-
     document.getElementById("plan-error").textContent = "";
   });
 });
@@ -319,13 +299,10 @@ document.getElementById("billing-toggle").addEventListener("click", () => {
 
 document.querySelectorAll(".next-step-button").forEach((button) => {
   button.addEventListener("click", () => {
-    if (currentStep === 2) {
-      if (selectedPlan === null) {
-        document.getElementById("plan-error").textContent =
-          "Please select a plan";
-
-        return;
-      }
+    if (currentStep === 2 && selectedPlan === null) {
+      document.getElementById("plan-error").textContent =
+        "Please select a plan";
+      return;
     }
 
     goToStep(currentStep + 1);

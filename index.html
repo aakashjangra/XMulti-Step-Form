@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Multi-Step Form</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
           <div class="step-item">
             <div class="step-number active" data-step="1">1</div>
             <div class="step-label">
-              <span>STEP 1</span>
+              <span>Step 1</span>
               <strong>YOUR INFO</strong>
             </div>
           </div>
@@ -24,7 +24,7 @@
           <div class="step-item">
             <div class="step-number" data-step="2">2</div>
             <div class="step-label">
-              <span>STEP 2</span>
+              <span>Step 2</span>
               <strong>SELECT PLAN</strong>
             </div>
           </div>
@@ -32,7 +32,7 @@
           <div class="step-item">
             <div class="step-number" data-step="3">3</div>
             <div class="step-label">
-              <span>STEP 3</span>
+              <span>Step 3</span>
               <strong>ADD-ONS</strong>
             </div>
           </div>
@@ -40,7 +40,7 @@
           <div class="step-item">
             <div class="step-number" data-step="4">4</div>
             <div class="step-label">
-              <span>STEP 4</span>
+              <span>Step 4</span>
               <strong>SUMMARY</strong>
             </div>
           </div>
@@ -48,8 +48,8 @@
       </aside>
 
       <section class="form-panel">
-        <!-- STEP 1 -->
-        <form id="personal-form" novalidate>
+        <!-- STEP 1: PERSONAL INFORMATION -->
+        <form id="personal-form">
           <header class="page-header">
             <h1>Personal info</h1>
             <p>Please provide your name, email address, and phone number.</p>
@@ -106,7 +106,7 @@
           </div>
         </form>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2: SELECT PLAN -->
         <section id="plan-step" class="step-content" hidden>
           <header class="page-header">
             <h1>Select your plan</h1>
@@ -114,8 +114,12 @@
           </header>
 
           <div class="plan-grid">
-            <button type="button" class="plan_card" data-plan="0"
-              aria-pressed="false">
+            <button
+              type="button"
+              class="plan_card"
+              data-plan="0"
+              aria-pressed="false"
+            >
               <span class="plan-icon arcade-icon">🎮</span>
               <span class="plan-info">
                 <strong>Arcade</strong>
@@ -124,8 +128,12 @@
               </span>
             </button>
 
-            <button type="button" class="plan_card" data-plan="1"
-              aria-pressed="false">
+            <button
+              type="button"
+              class="plan_card"
+              data-plan="1"
+              aria-pressed="false"
+            >
               <span class="plan-icon advanced-icon">🕹️</span>
               <span class="plan-info">
                 <strong>Advanced</strong>
@@ -134,8 +142,12 @@
               </span>
             </button>
 
-            <button type="button" class="plan_card" data-plan="2"
-              aria-pressed="false">
+            <button
+              type="button"
+              class="plan_card"
+              data-plan="2"
+              aria-pressed="false"
+            >
               <span class="plan-icon pro-icon">🎮</span>
               <span class="plan-info">
                 <strong>Pro</strong>
@@ -149,22 +161,28 @@
 
           <div class="billing-toggle">
             <span id="monthly-label" class="billing-active">Monthly</span>
-            <button type="button" class="toggle-switch" id="billing-toggle"
-              role="switch" aria-checked="false" aria-label="Toggle yearly billing">
+
+            <button
+              type="button"
+              class="toggle-switch"
+              id="billing-toggle"
+              role="switch"
+              aria-checked="false"
+              aria-label="Toggle yearly billing"
+            >
               <span class="toggle-knob"></span>
             </button>
+
             <span id="yearly-label">Yearly</span>
           </div>
 
           <div class="form-footer">
             <button type="button" class="back-button">Go Back</button>
-            <button type="button" id="next-button" class="next-step-button">
-              Next Step
-            </button>
+            <button type="button" class="next-step-button">Next Step</button>
           </div>
         </section>
 
-        <!-- STEP 3 -->
+        <!-- STEP 3: ADD-ONS -->
         <section id="addons-step" class="step-content" hidden>
           <header class="page-header">
             <h1>Pick add-ons</h1>
@@ -202,13 +220,11 @@
 
           <div class="form-footer">
             <button type="button" class="back-button">Go Back</button>
-            <button type="button" id="next-button" class="next-step-button">
-              Next Step
-            </button>
+            <button type="button" class="next-step-button">Next Step</button>
           </div>
         </section>
 
-        <!-- STEP 4 -->
+        <!-- STEP 4: SUMMARY -->
         <section id="summary-step" class="step-content" hidden>
           <header class="page-header">
             <h1>Finishing up</h1>
@@ -242,7 +258,7 @@
           </div>
         </section>
 
-        <!-- STEP 5 -->
+        <!-- STEP 5: THANK YOU -->
         <section id="thank-you-step" class="step-content thank-you" hidden>
           <div class="thank-you-icon" aria-hidden="true">✓</div>
           <h1>Thank You!</h1>
